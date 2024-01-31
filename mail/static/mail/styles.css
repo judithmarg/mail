@@ -3,7 +3,7 @@ textarea {
 }
 
 #emails-ul li {
-    border: 2px solid rgb(0, 255, 127);
+    border: 2px solid rgb(43, 75, 59);
     border-radius: 10px;
     display: flex;
     justify-content: space-between;
