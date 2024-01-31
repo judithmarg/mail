@@ -61,7 +61,7 @@ function load_mailbox(mailbox) {
       // Print emails
       const listEmails = document.querySelector('#emails-ul');
       const infoEmail = document.querySelector('#email-ul');
-     
+      listEmails.innerHTML = '';
       emails.forEach(email => {
         const li = document.createElement('li');
         const div1 = document.createElement('div');
@@ -76,7 +76,7 @@ function load_mailbox(mailbox) {
           fetch(`/emails/${email.id}`)
           .then(response => response.json())
           .then(email_selected => {
-            console.log(email_selected);
+            console.log(email);
             document.querySelector('#emails-ul').style.display = 'none';
             const from = document.createElement('div');
             from.innerHTML = `<b>From:</b> ${email_selected.sender}`;
@@ -94,6 +94,12 @@ function load_mailbox(mailbox) {
             infoEmail.append(subject);
             infoEmail.append(timestamp);
             infoEmail.append(body);
+          })
+          fetch(`/emails/${email.id}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                read: true
+            })
           })
         })
         listEmails.append(li);
