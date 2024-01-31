@@ -51,5 +51,56 @@ function load_mailbox(mailbox) {
   document.querySelector('#compose-view').style.display = 'none';
 
   // Show the mailbox name
-  document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+  document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>
+  <ul id='emails-ul'></ul><ul id='email-ul'></ul>`;
+  console.log(mailbox);
+  
+  if (mailbox == 'sent'){
+    fetch('/emails/sent')
+    .then(response => response.json())
+    .then(emails => {
+        // Print emails
+        const listEmails = document.querySelector('#emails-ul');
+        const infoEmail = document.querySelector('#email-ul');
+        
+        emails.forEach(email => {
+          const li = document.createElement('li');
+          const div1 = document.createElement('div');
+          const div2 = document.createElement('div');
+          const div3 = document.createElement('div');
+          div1.innerHTML = email.recipients[0];
+          div2.innerHTML = email.subject;
+          div3.innerHTML = email.timestamp;
+          li.append(div1);
+          li.append(div2);
+          li.append(div3);
+          li.addEventListener('click', function(){
+            fetch(`/emails/${email.id}`)
+            .then(response => response.json())
+            .then(email_selected => {
+              document.querySelector('#emails-ul').style.display = 'none';
+              console.log(email_selected);
+              const from = document.createElement('div');
+              const allRecipients =email_selected.recipients;
+              const recipientsRef = allRecipients.join(',');
+              from.innerHTML = `<b>From:</b> ${recipientsRef}`;
+              const to = document.createElement('div');
+              to.innerHTML = `<b>To:</b> ${email_selected.sender}`;
+              const subject = document.createElement('div');
+              subject.innerHTML = `<b>Subject:</b> ${email_selected.subject}`;
+              const timestamp = document.createElement('div');
+              timestamp.innerHTML = `<b>Timestamp:</b> ${email_selected.timestamp}`;
+              const body = email_selected.body;
+              infoEmail.append(from);
+              infoEmail.append(to);
+              infoEmail.append(subject);
+              infoEmail.append(timestamp);
+              infoEmail.append(body);
+            })
+          })
+          listEmails.append(li);
+        })
+    });
+    }
+
 }

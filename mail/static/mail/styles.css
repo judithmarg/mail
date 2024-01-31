@@ -1,3 +1,13 @@
 textarea {
     min-height: 400px;
 }
+
+#emails-ul li {
+    border: 2px solid rgb(0, 255, 127);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
