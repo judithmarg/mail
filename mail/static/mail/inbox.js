@@ -42,6 +42,7 @@ function submit_mail(){
       // Print result
       console.log(result);
   });
+  load_mailbox('sent');
 }
 
 function load_mailbox(mailbox) {
@@ -103,6 +104,33 @@ function load_mailbox(mailbox) {
           })
         })
         listEmails.append(li);
+        if(mailbox === 'inbox' && !email.archived){
+          const button = document.createElement('div');
+          button.innerHTML = `<button class="btn btn-sm btn-outline-primary">Archive</button>`
+          button.addEventListener('click', () => {
+            fetch(`/emails/${email.id}`, {
+              method: 'PUT',
+              body: JSON.stringify({
+                  archived: true
+              })
+            })
+          })
+          listEmails.append(button);
+        }else if(mailbox === 'archive' && email.archived){
+          const button = document.createElement('div');
+          button.innerHTML = `<button class="btn btn-sm btn-outline-primary">Unarchive</button>`
+          button.addEventListener('click', () => {
+            fetch(`/emails/${email.id}`, {
+              method: 'PUT',
+              body: JSON.stringify({
+                  archived: false
+              })
+            })
+            .then(load_mailbox('inbox'))
+          }
+          )
+          listEmails.append(button);
+        }
       })
   });
 
