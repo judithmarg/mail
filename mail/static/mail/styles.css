@@ -1,3 +1,13 @@
+body{
+    background-color: rgb(216, 255, 242);
+    font-family: Cambria, Cochin, Georgia, Times;
+}
+
+h2{
+    margin-top: 2rem;
+    font-size: 3rem;
+}
+
 textarea {
     min-height: 400px;
 }
@@ -14,4 +24,5 @@ textarea {
 #emails-ul button{
     width: 80px;
     height: 30px;
+    margin-bottom: 8px;
 }
